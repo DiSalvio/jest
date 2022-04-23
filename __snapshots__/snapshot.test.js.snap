@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`matches user snapshot 1`] = `
+User {
+  "age": 42,
+  "firstName": "Joey",
+  "job": "chief",
+  "lastName": undefined,
+}
+`;
