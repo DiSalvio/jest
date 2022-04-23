@@ -2,9 +2,9 @@ import User from './user.js'
 
 const user = new User({
   firstName: 'Joey',
-  LastName: 'Baggadonuts',
+  lastName: 'Spumoni',
   age: 42,
-  job: 'chief'
+  job: null
 })
 
 it('matches user snapshot', () => {
