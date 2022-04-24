@@ -15,3 +15,21 @@ describe('Model', () => {
     }))
   })
 })
+
+describe('Model record', () => {
+  const heroes = [{name: 'Batman'}, {name: 'Spiderman'}]
+
+  it('can add new data to collections', () => {
+    const model = new Model()
+    model.record(heroes)
+    expect(model.$collection).toEqual(heroes)
+  })
+
+  it('gets called when data is passed to constructor', () => {
+    const spy = jest.spyOn(Model.prototype, 'record')
+    const model = new Model(heroes)
+    expect(spy).toHaveBeenCalled()
+    expect(model.$collection).toEqual(heroes)
+    spy.mockRestore()
+  })
+})
