@@ -58,3 +58,25 @@ describe('Model find', () => {
     expect(model.find(1)).toEqual(heroes[0])
   })
 })
+
+describe('Model all', () => {
+  const heroes = [{id: 1, name: 'Batman'}, {id: 2, name: 'Spiderman'}]
+
+  it('returns empty model', () => {
+    const model = new Model()
+    expect(model.all()).toEqual([])
+  })
+
+  it('returns all model data', () => {
+    const model = new Model(heroes)
+    expect(model.all()).toEqual(heroes)
+  })
+
+  it('original data stays intact', () => {
+    const model = new Model(heroes)
+    const data = model.all()
+    data[0].name = 'Joker'
+
+    expect(model.$collection[0].name).toBe('Batman')
+  })
+})
