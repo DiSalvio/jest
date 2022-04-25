@@ -17,19 +17,44 @@ describe('Model', () => {
 })
 
 describe('Model record', () => {
-  const heroes = [{name: 'Batman'}, {name: 'Spiderman'}]
+  const heroes = [{id: 1, name: 'Batman'}, {name: 'Spiderman'}]
 
   it('can add new data to collections', () => {
     const model = new Model()
     model.record(heroes)
-    expect(model.$collection).toEqual(heroes)
+    expect(model.$collection).toEqual([
+      heroes[0],
+      {
+        id: expect.any(Number),
+        ...heroes[1]
+      }
+    ])
   })
 
   it('gets called when data is passed to constructor', () => {
     const spy = jest.spyOn(Model.prototype, 'record')
     const model = new Model(heroes)
     expect(spy).toHaveBeenCalled()
-    expect(model.$collection).toEqual(heroes)
+    expect(model.$collection).toEqual([
+      heroes[0],
+      {
+        id: expect.any(Number),
+        ...heroes[1]
+      }
+    ])
     spy.mockRestore()
+  })
+})
+
+describe('Model find', () => {
+  const heroes = [{id: 1, name: 'Batman'}, {id: 2, name: 'Spiderman'}]
+  const model = new Model(heroes)
+
+  it('returns nothing if id does not exist', () => {
+    expect(model.find(4)).toEqual(null)
+  })
+
+  it('returns something if id exists', () => {
+    expect(model.find(1)).toEqual(heroes[0])
   })
 })

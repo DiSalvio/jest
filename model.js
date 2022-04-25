@@ -6,14 +6,27 @@ export default class Model {
     }
   }
 
-  record(data) {
-    this.$collection.push(...data)
+  record (data) {
+    const mappedData = data.map(entry => {
+      if (entry.id) {
+        return entry
+      } else {
+        return {
+          id: 2,
+          ...entry
+        }
+      }
+    })
+    this.$collection.push(...mappedData)
   }
 
   all() {
   }
   update() {
   }
-  find() {
+
+  find (value) {
+    const result = this.$collection.find(entry => entry.id === value)
+    return result ? result : null
   }
 }
