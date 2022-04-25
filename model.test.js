@@ -80,3 +80,30 @@ describe('Model all', () => {
     expect(model.$collection[0].name).toBe('Batman')
   })
 })
+
+describe('Model update', () => {
+  const heroes = [{id: 1, name: 'Batman'}]
+  let model
+
+  beforeEach(() => {
+    model = new Model(heroes)
+  })
+
+  it('updates an entry by id', () => {
+    model.update(1, { name: 'Joker' })
+    expect(model.find(1).name).toBe('Joker')
+  })
+
+  it('extends an entry by id', () => {
+    model.update(1, { cape: true })
+    expect(model.find(1)).toEqual(expect.objectContaining({
+      id: 1,
+      name: 'Batman',
+      cape: true
+    }))
+  })
+
+  it('returns false if no entry matches id', () => {
+    expect(model.update(4, {})).toBe(false)
+  })
+})

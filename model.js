@@ -24,11 +24,20 @@ export default class Model {
     return this.$collection.map(entry => Object.assign({}, entry))
   }
 
-  update() {
+  update(id, data) {
+    const index = this.$collection.findIndex(entry => entry.id === id)
+    if (index != -1) {
+      this.$collection[index] = {
+        ...this.$collection[index],
+        ...data
+      }
+    } else {
+      return false
+    }
   }
 
-  find (value) {
-    const result = this.$collection.find(entry => entry.id === value)
+  find (id) {
+    const result = this.$collection.find(entry => entry.id === id)
     return result ? result : null
   }
 }
