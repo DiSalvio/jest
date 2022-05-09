@@ -8,6 +8,7 @@ describe('Model', () => {
   it('creates with correct structure', () => {
     expect(new Model).toEqual(expect.objectContaining({
       $collection: expect.any(Array),
+      $options: expect.any(Object),
       record: expect.any(Function),
       all: expect.any(Function),
       update: expect.any(Function),
@@ -33,7 +34,7 @@ describe('Model record', () => {
 
   it('gets called when data is passed to constructor', () => {
     const spy = jest.spyOn(Model.prototype, 'record')
-    const model = new Model(heroes)
+    const model = new Model({ data: heroes })
     expect(spy).toHaveBeenCalled()
     expect(model.$collection).toEqual([
       heroes[0],
@@ -48,7 +49,7 @@ describe('Model record', () => {
 
 describe('Model find', () => {
   const heroes = [{id: 1, name: 'Batman'}, {id: 2, name: 'Spiderman'}]
-  const model = new Model(heroes)
+  const model = new Model({ data: heroes })
 
   it('returns nothing if id does not exist', () => {
     expect(model.find(4)).toEqual(null)
@@ -68,12 +69,12 @@ describe('Model all', () => {
   })
 
   it('returns all model data', () => {
-    const model = new Model(heroes)
+    const model = new Model({ data: heroes })
     expect(model.all()).toEqual(heroes)
   })
 
   it('original data stays intact', () => {
-    const model = new Model(heroes)
+    const model = new Model({ data: heroes })
     const data = model.all()
     data[0].name = 'Joker'
 
@@ -86,7 +87,7 @@ describe('Model update', () => {
   let model
 
   beforeEach(() => {
-    model = new Model(heroes)
+    model = new Model({ data: heroes })
   })
 
   it('updates an entry by id', () => {
@@ -107,3 +108,13 @@ describe('Model update', () => {
     expect(model.update(4, {})).toBe(false)
   })
 })
+
+describe('customizations', () => {
+  test('can customize the primary key', () => {
+    const model = new Model({
+      primaryKey: 'name'
+    })
+    expect(model.$options.primaryKey).toBe('name')
+  })
+})
+
